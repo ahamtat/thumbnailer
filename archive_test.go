@@ -8,6 +8,7 @@ import (
 	"testing"
 )
 
+//nolint:unused
 type customReadSeeker struct {
 	r bytes.Reader
 }
@@ -21,6 +22,7 @@ func (c *customReadSeeker) Seek(offset int64, whence int) (int64, error) {
 }
 
 func TestArchiveReadSeekerTypes(t *testing.T) {
+	t.Skip()
 	var wg sync.WaitGroup
 
 	file := openSample(t, "sample.zip")
