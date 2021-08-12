@@ -6,6 +6,8 @@ import (
 	"image"
 	"io"
 	"time"
+
+	"github.com/gabriel-vasile/mimetype"
 )
 
 // Source stores information about the source file
@@ -81,7 +83,7 @@ func Process(rs io.ReadSeeker, opts Options) (
 		opts.ThumbDims.Height = 150
 	}
 
-	src.Mime, src.Extension, err = DetectMIME(rs, opts.AcceptedMimeTypes)
+	mtype, err := mimetype.DetectReader(rs)
 	if err != nil {
 		return
 	}
@@ -89,6 +91,9 @@ func Process(rs io.ReadSeeker, opts Options) (
 	if err != nil {
 		return
 	}
+
+	src.Mime = mtype.String()
+	src.Extension = mtype.Extension()
 
 	// TODO: PDF Processing
 	// TODO: SVG processing
@@ -113,10 +118,15 @@ func Process(rs io.ReadSeeker, opts Options) (
 			"video/quicktime",
 			"video/x-ms-wmv",
 			"video/x-flv",
+			"video/x-msvideo",
+			"video/ogg",
+			"video/x-ms-asf",
 			"audio/mpeg",
 			"audio/aac",
 			"audio/wave",
 			"audio/x-flac",
+			"audio/flac",
+			"audio/ogg",
 			"audio/midi":
 			fn = processMedia
 		case mimeZip:

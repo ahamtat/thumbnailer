@@ -46,8 +46,6 @@ var samples = [...]string{
 	"start_black.webm", // Check the histogram thumbnailing
 	"rare_brand.mp4",
 	"invalid_data.jpg", // Check handling images with some invalid data
-	"sample.zip",
-	"sample.rar",
 	"too small.png",
 	"exact_thumb_size.jpg",
 	"meta_segfault.mp4",
@@ -76,8 +74,7 @@ func TestProcess(t *testing.T) {
 		ThumbDims: Dims{150, 150},
 	}
 
-	for i := range samples {
-		sample := samples[i]
+	for _, sample := range samples {
 		t.Run(sample, func(t *testing.T) {
 			t.Parallel()
 
@@ -121,7 +118,7 @@ func writeSample(t *testing.T, name string, img image.Image) {
 	}
 	defer f.Close()
 
-	png.Encode(f, img)
+	err = png.Encode(f, img)
 	if err != nil {
 		t.Fatal(err)
 	}
