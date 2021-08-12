@@ -37,7 +37,7 @@ func processZip(rs io.ReadSeeker, src *Source, opts Options,
 		return
 	}
 
-	switch rs.(type) {
+	switch rs.(type) { // nolint:gosimple
 	case *os.File:
 		err = useFile(rs.(*os.File))
 		if err != nil {
@@ -161,8 +161,8 @@ func processRar(rs io.ReadSeeker, src *Source, opts Options,
 	}
 
 	var (
-		imageCount = 0
-		i          = 0
+		imageCount int
+		i          int
 		h          *rardecode.FileHeader
 	)
 	// Only check the first 10 files. We don't need to check them all.
